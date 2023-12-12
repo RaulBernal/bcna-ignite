@@ -7,7 +7,9 @@ import (
 
 	storetypes "cosmossdk.io/store/types"
 	circuittypes "cosmossdk.io/x/circuit/types"
+	"cosmossdk.io/x/feegrant"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
+	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
 )
 
 // RegisterUpgradeHandlers registers upgrade handlers.
@@ -39,6 +41,8 @@ func (app *App) StickyFingers(_ upgradetypes.Plan) {
 		storeUpgrades := storetypes.StoreUpgrades{
 			Added: []string{
 				circuittypes.ModuleName,
+				ibcfeetypes.ModuleName,
+				feegrant.ModuleName,
 			},
 		}
 
