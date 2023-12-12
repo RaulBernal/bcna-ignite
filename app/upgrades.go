@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/cosmos/cosmos-sdk/types/module"
 
@@ -28,7 +29,7 @@ func (app *App) StickyFingers(_ upgradetypes.Plan) {
 			app.Logger().Info("Cosmos-SDK v0.50.x is here...")
 			// Print the modules with their respective ver.
 			for moduleName, version := range fromVM {
-				app.Logger().Info("Module: %s, Version: %d\n", moduleName, version)
+				app.Logger().Info(fmt.Sprintf("Module: %s, Version: %d", moduleName, version))
 
 			}
 
