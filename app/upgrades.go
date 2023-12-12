@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"log"
 
 	"github.com/cosmos/cosmos-sdk/types/module"
 
@@ -26,10 +25,11 @@ func (app *App) StickyFingers(_ upgradetypes.Plan) {
 	app.UpgradeKeeper.SetUpgradeHandler(
 		planName,
 		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			log.Printf("Cosmos-SDK v0.50.x is here...")
-			// Agrega un mensaje de depuración para imprimir la versión de los módulos
+			app.Logger().Info("Cosmos-SDK v0.50.x is here...")
+			// Print the modules with their respective ver.
 			for moduleName, version := range fromVM {
-				log.Printf("Module: %s, Version: %d\n", moduleName, version)
+				app.Logger().Info("Module: %s, Version: %d\n", moduleName, version)
+
 			}
 
 			return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
