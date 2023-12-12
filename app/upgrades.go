@@ -2,14 +2,13 @@ package app
 
 import (
 	"context"
+	"log"
 
 	"github.com/cosmos/cosmos-sdk/types/module"
 
 	storetypes "cosmossdk.io/store/types"
 	circuittypes "cosmossdk.io/x/circuit/types"
-	"cosmossdk.io/x/feegrant"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
 )
 
 // RegisterUpgradeHandlers registers upgrade handlers.
@@ -23,11 +22,15 @@ func (app App) RegisterUpgradeHandlers() {
 	app.StickyFingers(upgradeInfo)
 }
 func (app *App) StickyFingers(_ upgradetypes.Plan) {
-	planName := "stickyfingers"
+	planName := "StickyFingers"
 	app.UpgradeKeeper.SetUpgradeHandler(
 		planName,
 		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			//ctx.Logger().Info("Cosmos-SDK v0.50.x is here...")
+			log.Printf("Cosmos-SDK v0.50.x is here...")
+			// Agrega un mensaje de depuración para imprimir la versión de los módulos
+			for moduleName, version := range fromVM {
+				log.Printf("Module: %s, Version: %d\n", moduleName, version)
+			}
 
 			return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 		},
@@ -41,8 +44,7 @@ func (app *App) StickyFingers(_ upgradetypes.Plan) {
 		storeUpgrades := storetypes.StoreUpgrades{
 			Added: []string{
 				circuittypes.ModuleName,
-				ibcfeetypes.ModuleName,
-				feegrant.ModuleName,
+				"feeibc",
 			},
 		}
 
